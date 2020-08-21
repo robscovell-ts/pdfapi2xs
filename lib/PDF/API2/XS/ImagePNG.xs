@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-uint8_t paeth_predictor (uint8_t a, uint8_t b, uint8_t c) {
-    uint8_t p = a + b - c;
-    uint8_t pa = abs(p - a);
-    uint8_t pb = abs(p - b);
-    uint8_t pc = abs(p - c);
+int paeth_predictor (int a, int b, int c) {
+    int p = a + b - c;
+    int pa = abs(p - a);
+    int pb = abs(p - b);
+    int pc = abs(p - c);
     if ((pa <= pb ) && (pa <= pc)) {
         return a;
     }
@@ -28,7 +28,6 @@ AV*
 unfilter (AV * line, AV * prev, int filter, int bpp)
   CODE:
     int line_length = av_len(line);
-    uint8_t u8bpp = (uint8_t) bpp;
     uint8_t * in_array   = (uint8_t *)malloc((line_length) * sizeof(uint8_t));
     uint8_t * prev_array = (uint8_t *)malloc((line_length) * sizeof(uint8_t));
     uint8_t * out_array  = (uint8_t *)malloc((line_length) * sizeof(uint8_t));
@@ -70,7 +69,7 @@ unfilter (AV * line, AV * prev, int filter, int bpp)
             sub = *(in_array + i);
           }
           else {
-            sub = *(in_array + i) + *(out_array + i - u8bpp);
+            sub = *(in_array + i) + *(out_array + i - bpp);
           }
           *(out_array + i) = sub;
         }
@@ -89,7 +88,7 @@ unfilter (AV * line, AV * prev, int filter, int bpp)
             sub = *(in_array + i) + (*(prev_array + i) / 2); 
           }
           else {
-            sub = *(in_array + i) + ((*(out_array + i - u8bpp) + *(prev_array + i)) / 2);
+            sub = *(in_array + i) + ((*(out_array + i - bpp) + *(prev_array + i)) / 2);
           }
           *(out_array + i) = sub;
         }
@@ -104,8 +103,8 @@ unfilter (AV * line, AV * prev, int filter, int bpp)
             c = 0;
           }
           else {
-            a = *(out_array + i - u8bpp);
-            c = *(prev_array + i - u8bpp);
+            a = *(out_array + i - bpp);
+            c = *(prev_array + i - bpp);
           }
           *(out_array + i) = *(in_array + i) + paeth_predictor(a, b, c);
         }
