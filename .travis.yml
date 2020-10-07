@@ -2,11 +2,6 @@ sudo: false
 
 language: perl
 
-addons:
-  apt:
-    packages:
-      - ttf-dejavu
-
 perl:
   - "5.30"
   - "5.28"
@@ -15,13 +10,13 @@ perl:
   - "5.22"
 
 before_install:
-    - cpanm -n Dist::Zilla::App::Command::cover
-    - cpanm -n Devel::Cover::Report::Coveralls
+  - cpanm -n Dist::Zilla::App::Command::cover
+  - cpanm -n Devel::Cover::Report::Coveralls
 
 install:
-    - dzil authordeps --missing | cpanm -n || { cat ~/.cpanm/build.log ; false ; }
-    - dzil listdeps   --missing | cpanm -n || { cat ~/.cpanm/build.log ; false ; }
+  - dzil authordeps --missing | cpanm -n || { cat ~/.cpanm/build.log ; false ; }
+  - dzil listdeps   --missing | cpanm -n || { cat ~/.cpanm/build.log ; false ; }
 
 script:
-    - dzil test --author --release
-    - dzil cover -report coveralls
+  - dzil test --author --release
+  - dzil cover -report coveralls
