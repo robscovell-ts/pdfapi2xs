@@ -4,7 +4,6 @@ os:
   - linux
   - osx
   - windows
-  - solaris
 
 perl:
   - "5.30"
