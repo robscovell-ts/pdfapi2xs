@@ -2,8 +2,6 @@ language: perl
 
 os:
   - linux
-  - osx
-  - windows
 
 perl:
   - "5.30"
