@@ -1,5 +1,11 @@
 language: perl
 
+os:
+  - linux
+  - osx
+  - windows
+  - solaris
+
 perl:
   - "5.30"
   - "5.28"
